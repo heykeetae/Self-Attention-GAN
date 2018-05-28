@@ -12,40 +12,40 @@ class Self_Attn(nn.Module):
     attn_score: batch_size x feature_size x feature_size
     output: batch_size x feature_depth x feature_size x feature_size
     '''
+
     def __init__(self, b_size, imsize, in_dim, activation):
         super(Self_Attn, self).__init__()
         self.b_size = b_size
         self.imsize = imsize
         self.in_dim = in_dim
-        self.f_ = nn.Conv2d(in_dim, int(in_dim/8), 1)
-        self.g_ = nn.Conv2d(in_dim, int(in_dim/8), 1)
+        self.f_ = nn.Conv2d(in_dim, int(in_dim / 8)*(imsize ** 2), 1)
+        self.g_ = nn.Conv2d(in_dim, int(in_dim / 8)*(imsize ** 2), 1)
         self.h_ = nn.Conv2d(in_dim, in_dim, 1)
-        if activation == 'relu':
-            self.activation = F.relu
-        elif activation == 'lrelu':
-            self.activation = F.leakyrelu
-        self.f__ = nn.Conv2d(int(in_dim/8), in_dim*(imsize**2), 1)
-        self.g__ = nn.Conv2d(int(in_dim/8), in_dim*(imsize**2), 1)
 
-        self.gamma = nn.Parameter(torch.zeros(self.b_size,1,1,1))
+        self.gamma = nn.Parameter(torch.zeros(self.b_size, 1, 1, 1))
 
-    def forward(self, x):
-        b_size = x.size(0)
-        f_size = x.size(-1)
+    def forward(self, x, pixel_wise=True):
+        if pixel_wise:
+            b_size = x.size(0)
+            f_size = x.size(-1)
 
-        f_x = self.f__(self.activation(self.f_(x))) # batch x in_dim*f*f x f_size x f_size
-        g_x = self.g__(self.activation(self.g_(x))) # batch x in_dim*f*f x f_size x f_size
-        h_x = self.activation(self.h_(x)).unsqueeze(2).repeat(1,1,f_size**2,1,1).contiguous().view(b_size, -1, f_size**2, f_size**2) # batch x in_dim x f*f x f_size x f_size
+            f_x = self.f_(x)  # batch x in_dim/8*f*f x f_size x f_size
+            g_x = self.g_(x)  # batch x in_dim/8*f*f x f_size x f_size
+            h_x = self.h_(x).unsqueeze(2).repeat(1, 1, f_size ** 2, 1, 1).contiguous()\
+                                                                .view(b_size, -1,f_size ** 2,f_size ** 2)  # batch x in_dim x f*f x f_size x f_size
 
-        f_ready = f_x.contiguous().view(b_size, -1, f_size**2, f_size, f_size).permute(0,1,2,4,3) # batch x in_dim*f*f x f_size2 x f_size1
-        g_ready = g_x.contiguous().view(b_size, -1, f_size**2, f_size, f_size) # batch x in_dim*f*f x f_size1 x f_size2
+            f_ready = f_x.contiguous().view(b_size, -1, f_size ** 2, f_size, f_size).permute(0, 1, 2, 4,
+                                                                                             3)  # batch x in_dim*f*f x f_size2 x f_size1
+            g_ready = g_x.contiguous().view(b_size, -1, f_size ** 2, f_size,
+                                            f_size)  # batch x in_dim*f*f x f_size1 x f_size2
 
-        attn_dist = torch.mul(f_ready,g_ready).sum(dim=1).contiguous().view(-1,f_size**2) # batch*f*f x f_size1*f_size2
-        attn_soft = F.softmax(attn_dist,dim=1).contiguous().view(b_size, f_size**2, f_size**2) # batch x f*f x f*f
-        attn_score = attn_soft.unsqueeze(1) # batch x 1 x f*f x f*f
+            attn_dist = torch.mul(f_ready, g_ready).sum(dim=1).contiguous().view(-1, f_size ** 2)  # batch*f*f x f_size1*f_size2
+            attn_soft = F.softmax(attn_dist, dim=1).contiguous().view(b_size, f_size ** 2, f_size ** 2)  # batch x f*f x f*f
+            attn_score = attn_soft.unsqueeze(1)  # batch x 1 x f*f x f*f
 
-        self_attn_map = torch.mul(h_x, attn_score).sum(dim=3).contiguous().view(b_size, -1, f_size, f_size) # batch x in_dim x f*f
-        self_attn_map = self.gamma*self_attn_map + x
+            self_attn_map = torch.mul(h_x, attn_score).sum(dim=3).contiguous().view(b_size, -1, f_size, f_size)  # batch x in_dim x f*f
+
+            self_attn_map = self.gamma * self_attn_map + x
 
         return self_attn_map, attn_score
 
