@@ -1,9 +1,15 @@
 # SAGAN
 Pytorch implementation of Self-Attention Generative Adversarial Networks (SAGAN)
 
-This repository provides a PyTorch implementation of [SAGAN](https://arxiv.org/abs/1805.08318). 
-<p align="center"><img width="100%" src="PNG/main.PNG" /></p>
+This repository provides a PyTorch implementation of [SAGAN](https://arxiv.org/abs/1805.08318). Note that wgan-gp is somehow not compatible with the spectral normalization. remove all the spectral normalization at the model for the adoption of wgan-gp.
 
+<p align="center"><img width="100%" src="PNG/main_model.PNG" /></p>
+
+## Current repository status
+
+[x] Supervised setting
+[x] Image Results
+[o] Unsupervised setting (use no label yet)
 [o] Applied: [Spectral Normalization](https://github.com/christiancosgrove/pytorch-spectral-normalization-gan)
 [o] Implemented: self-attention module, two-timescale update rule (TTUR), wgan-hinge loss, wgan-gp loss
 
