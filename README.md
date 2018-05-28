@@ -7,11 +7,11 @@ This repository provides a PyTorch implementation of [SAGAN](https://arxiv.org/a
 
 ## Current repository status
 
-[x] Supervised setting &nbsp;
-[x] Image Results &nbsp;
-[o] Unsupervised setting (use no label yet) &nbsp;
-[o] Applied: [Spectral Normalization](https://github.com/christiancosgrove/pytorch-spectral-normalization-gan) &nbsp;
-[o] Implemented: self-attention module, two-timescale update rule (TTUR), wgan-hinge loss, wgan-gp loss &nbsp;
+*[x] Supervised setting
+*[x] Image Results 
+*[o] Unsupervised setting (use no label yet) 
+*[o] Applied: [Spectral Normalization](https://github.com/christiancosgrove/pytorch-spectral-normalization-gan)
+*[o] Implemented: self-attention module, two-timescale update rule (TTUR), wgan-hinge loss, wgan-gp loss
 
 &nbsp;
 &nbsp;
