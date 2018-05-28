@@ -6,7 +6,7 @@ This repository provides a PyTorch implementation of [SAGAN](https://arxiv.org/a
 
 Self-attentions are applied to later two layers of both discriminator and generator.
 
-Note that due to the pixel-wise self-attention cost a tune of GPU resource. Batch size of 5~6 available for a single Titan X gpu. Reduce the number of self-attention module for less memory consumption. Removing all the self-attention layers still give you good results, which will be shared shortly.
+Note that the pixel-wise self-attention costs tunes of GPU resource. Batch size of 5~6 available for a single Titan X gpu. Reduce the number of self-attention module for less memory consumption. Removing all the self-attention layers still give you good results, which will be shared shortly.
 
 <p align="center"><img width="100%" src="image/main_model.PNG" /></p>
 
