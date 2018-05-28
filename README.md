@@ -5,11 +5,8 @@ Pytorch implementation of Self-Attention Generative Adversarial Networks (SAGAN)
 This repository provides a PyTorch implementation of [SAGAN](https://arxiv.org/abs/1805.08318). Both wgan-gp and wgan-hinge loss are ready, but note that wgan-gp is somehow not compatible with the spectral normalization. remove all the spectral normalization at the model for the adoption of wgan-gp.
 
 Self-attentions are applied to later two layers of both discriminator and generator.
-There are two versions
 
-The pixel-wise self-attention, that is, each pixel takes different attention mask, costs tunes of GPU resource. Batch size of 5~6 available for a single Titan X gpu. Reduce the number of self-attention module for less memory consumption. Removing all the self-attention layers still give you good results, which will be shared shortly.
-
-Image-wise self-attention will calculate self-attention score one per layer, reducing the total complexity significantly. It will be added very soon. 
+The pixel-wise self-attention, that is, each pixel takes different attention mask, costs tunes of GPU resource. Batch size of around 8 is available for a single Titan X gpu. You may reduce the number of self-attention modules for less memory consumption.
 
 <p align="center"><img width="100%" src="image/main_model.PNG" /></p>
 
@@ -17,8 +14,6 @@ Image-wise self-attention will calculate self-attention score one per layer, red
 
 * [ ] Supervised setting
 * [ ] generated image results (under training)
-* [x] Image-wise self-attention
-* [x] Pixel-wise self-attention
 * [x] Unsupervised setting (use no label yet) 
 * [x] Applied: [Spectral Normalization](https://arxiv.org/abs/1802.05957), code from [here](https://github.com/christiancosgrove/pytorch-spectral-normalization-gan)
 * [x] Implemented: self-attention module, two-timescale update rule (TTUR), wgan-hinge loss, wgan-gp loss
