@@ -5,7 +5,7 @@ This repository provides a PyTorch implementation of [SAGAN](https://arxiv.org/a
 
 <p align="center"><img width="100%" src="image/main_model.PNG" /></p>
 
-## Current repository status
+## Current update status
 
 * [ ] Supervised setting
 * [ ] Image Results 
