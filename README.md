@@ -3,6 +3,10 @@ Pytorch implementation of Self-Attention Generative Adversarial Networks (SAGAN)
 
 This repository provides a PyTorch implementation of [SAGAN](https://arxiv.org/abs/1805.08318). Both wgan-gp and wgan-hinge loss are ready, but note that wgan-gp is somehow not compatible with the spectral normalization. remove all the spectral normalization at the model for the adoption of wgan-gp.
 
+Self-attentions are applied to later two layers of both discriminator and generator.
+
+Note that due to the pixel-wise self-attention cost a tune of GPU resource. Batch size of 5~6 available for Titan X gpu. Reduce the number of self-attention module for less memory consumption. Removing all the self-attention layers still give you good results, which will be shared shortly.
+
 <p align="center"><img width="100%" src="image/main_model.PNG" /></p>
 
 ## Current update status
