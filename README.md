@@ -1,4 +1,4 @@
-# SAGAN
+# Self-Attention GAN
 Pytorch implementation of Self-Attention Generative Adversarial Networks (SAGAN)
 
 This repository provides a PyTorch implementation of [SAGAN](https://arxiv.org/abs/1805.08318). Both wgan-gp and wgan-hinge loss are ready, but note that wgan-gp is somehow not compatible with the spectral normalization. remove all the spectral normalization at the model for the adoption of wgan-gp.
@@ -38,7 +38,7 @@ Note that due to the pixel-wise self-attention cost a tune of GPU resource. Batc
 #### 1. Clone the repository
 ```bash
 $ git clone https://github.com/heykeetae/SAGAN.git
-$ cd SAGAN
+$ cd Self-Attention-GAN
 ```
 
 #### 2. Install datasets (CelebA or LSUN)
