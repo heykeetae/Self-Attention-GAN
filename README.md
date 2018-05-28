@@ -1,6 +1,5 @@
 # Self-Attention GAN
-Pytorch implementation of Self-Attention Generative Adversarial Networks (SAGAN)
-
+Pytorch implementation of Self-Attention Generative Adversarial Networks (SAGAN).
 Zhang, Han, et al. "Self-Attention Generative Adversarial Networks." arXiv preprint arXiv:1805.08318 (2018).
 
 This repository provides a PyTorch implementation of [SAGAN](https://arxiv.org/abs/1805.08318). Both wgan-gp and wgan-hinge loss are ready, but note that wgan-gp is somehow not compatible with the spectral normalization. remove all the spectral normalization at the model for the adoption of wgan-gp.
