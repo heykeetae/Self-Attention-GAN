@@ -40,21 +40,9 @@ class Trainer(object):
         self.beta1 = config.beta1
         self.beta2 = config.beta2
         self.pretrained_model = config.pretrained_model
-        self.gum_orig = config.gum_orig
-        self.gum_temp = config.gum_temp
-        self.min_temp = config.min_temp
-        self.gum_temp_decay = config.gum_temp_decay
-        self.step_anneal = config.step_anneal
-        self.start_anneal = config.start_anneal
-        self.test_model = config.test_model
-        self.result_path = config.result_path
-        self.version = config.version
-        self.nrow = config.nrow
-        self.ncol = config.ncol
+
         self.dataset = config.dataset
         self.use_tensorboard = config.use_tensorboard
-        self.load_balance_on = config.load_balance_on
-        self.load_weight = config.load_weight
         self.image_path = config.image_path
         self.log_path = config.log_path
         self.model_save_path = config.model_save_path
@@ -62,8 +50,7 @@ class Trainer(object):
         self.log_step = config.log_step
         self.sample_step = config.sample_step
         self.model_save_step = config.model_save_step
-        self.score_epoch = config.score_epoch
-        self.score_start = config.score_start
+        self.version = config.version
 
         # Path
         self.log_path = os.path.join(config.log_path, self.version)
