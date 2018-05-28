@@ -12,7 +12,7 @@ Note that due to the pixel-wise self-attention cost a tune of GPU resource. Batc
 ## Current update status
 
 * [ ] Supervised setting
-* [ ] Image Results 
+* [ ] generated image results (under training)
 * [x] Unsupervised setting (use no label yet) 
 * [x] Applied: [Spectral Normalization](https://arxiv.org/abs/1802.05957), code from [here](https://github.com/christiancosgrove/pytorch-spectral-normalization-gan)
 * [x] Implemented: self-attention module, two-timescale update rule (TTUR), wgan-hinge loss, wgan-gp loss
