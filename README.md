@@ -32,7 +32,7 @@ Per-pixel attention result of SAGAN on LSUN church-outdoor dataset. It shows tha
 <p align="center"><img width="100%" src="PNG/celeb_result.png" /></p>
 
 ### LSUN church-outdoor dataset (epoch #)
-<p align="center"><img width="100%" src="PNG/lsun_result.png" /></p>
+<p align="center"><img width="100%" src="image/sagan_lsun.png" /></p>
 
 ## Prerequisites
 * [Python 3.5+](https://www.continuum.io/downloads)
