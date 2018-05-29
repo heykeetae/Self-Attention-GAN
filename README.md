@@ -11,9 +11,9 @@ The pixel-wise self-attention, that is, each pixel takes different attention mas
 <p align="center"><img width="100%" src="image/main_model.PNG" /></p>
 
 ## Current update status
-
 * [ ] Supervised setting
-* [ ] generated image results (under training)
+* [ ] Better attention visualization
+* [ ] Generated image results (under training, aiming for epoch 100)
 * [x] Attention visualization (LSUN Church-outdoor)
 * [x] Unsupervised setting (use no label yet) 
 * [x] Applied: [Spectral Normalization](https://arxiv.org/abs/1802.05957), code from [here](https://github.com/christiancosgrove/pytorch-spectral-normalization-gan)
