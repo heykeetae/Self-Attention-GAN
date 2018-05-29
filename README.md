@@ -14,6 +14,7 @@ The pixel-wise self-attention, that is, each pixel takes different attention mas
 
 * [ ] Supervised setting
 * [ ] generated image results (under training)
+* [ ] Attention visualization (LSUN Church-outdoor)
 * [x] Unsupervised setting (use no label yet) 
 * [x] Applied: [Spectral Normalization](https://arxiv.org/abs/1802.05957), code from [here](https://github.com/christiancosgrove/pytorch-spectral-normalization-gan)
 * [x] Implemented: self-attention module, two-timescale update rule (TTUR), wgan-hinge loss, wgan-gp loss
@@ -22,6 +23,11 @@ The pixel-wise self-attention, that is, each pixel takes different attention mas
 &nbsp;
 
 ## Results
+
+### Attention result on LSUN (epoch #8)
+<p align="center"><img width="100%" src="image/sagan_attn.png" /></p>
+Per-pixel attention result of SAGAN on LSUN church-outdoor dataset. It shows that unsupervised training of self-attention module still works somehow, although it is not interpretable with the attention map itself. These are the visualization of self-attention in generator layer3 and layer4, which are in the size of 16 x 16 and 32 x 32 respectively, each for 64 images. To visualize the per-pixel attentions, only a number of pixels are chosen, as shown on the leftmost and the rightmost numbers indicate. 
+
 ### CelebA dataset (epoch #)
 <p align="center"><img width="100%" src="PNG/celeb_result.png" /></p>
 
