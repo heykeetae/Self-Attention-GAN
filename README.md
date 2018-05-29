@@ -38,7 +38,7 @@ The pixel-wise self-attention, that is, each pixel takes different attention mas
 
 #### 1. Clone the repository
 ```bash
-$ git clone https://github.com/heykeetae/SAGAN.git
+$ git clone https://github.com/heykeetae/Self-Attention-GAN.git
 $ cd Self-Attention-GAN
 ```
 
