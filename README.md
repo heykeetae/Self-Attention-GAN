@@ -26,7 +26,7 @@ The pixel-wise self-attention, that is, each pixel takes different attention mas
 
 ### Attention result on LSUN (epoch #8)
 <p align="center"><img width="100%" src="image/sagan_attn.png" /></p>
-Per-pixel attention result of SAGAN on LSUN church-outdoor dataset. It shows that unsupervised training of self-attention module still works somehow, although it is not interpretable with the attention map itself. These are the visualization of self-attention in generator layer3 and layer4, which are in the size of 16 x 16 and 32 x 32 respectively, each for 64 images. To visualize the per-pixel attentions, only a number of pixels are chosen, as shown on the leftmost and the rightmost numbers indicate. 
+Per-pixel attention result of SAGAN on LSUN church-outdoor dataset. It shows that unsupervised training of self-attention module still works, although it is not interpretable with the attention map itself. Better results with regard to the generated images will be added. These are the visualization of self-attention in generator layer3 and layer4, which are in the size of 16 x 16 and 32 x 32 respectively, each for 64 images. To visualize the per-pixel attentions, only a number of pixels are chosen, as shown on the leftmost and the rightmost numbers indicate. 
 
 ### CelebA dataset (epoch on the left, still under training)
 <p align="center"><img width="80%" src="image/sagan_celeb.png" /></p>
