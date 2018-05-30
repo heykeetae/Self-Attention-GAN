@@ -55,9 +55,19 @@ or
 $ bash download.sh LSUN
 ```
 
+&nbsp;
 #### 3. Train 
 ##### (i) Train
 ```bash
-$ python python main.py --batch_size 6 --imsize 64 --dataset celeb --adv_loss hinge --version sagan_1
+$ python python main.py --batch_size 6 --imsize 64 --dataset celeb --adv_loss hinge --version sagan_celeb
+or
+$ python python main.py --batch_size 6 --imsize 64 --dataset lsun --adv_loss hinge --version sagan_lsun
 ```
-&nbsp;
+#### 4. Enjoy the results
+```bash
+$ cd samples/sagan_celeb
+or
+$ cd samples/sagan_lsun
+
+```
+For samples generated every 100 iterations. The rate of sampling could be controlled in the Parameter.py file. 
