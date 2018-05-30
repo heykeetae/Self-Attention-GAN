@@ -56,7 +56,7 @@ or
 $ bash download.sh LSUN
 ```
 
-&nbsp; 
+
 #### 3. Train 
 ##### (i) Train
 ```bash
