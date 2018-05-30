@@ -71,4 +71,4 @@ or
 $ cd samples/sagan_lsun
 
 ```
-For samples generated every 100 iterations. The rate of sampling could be controlled in the Parameter.py file. 
+Samples generated every 100 iterations are located. The rate of sampling could be controlled via --sample_step (ex, --sample_step 100). 
