@@ -22,7 +22,7 @@ class Self_Attn(nn.Module):
         self.g_ = nn.Conv2d(in_dim, int(in_dim / 8)*(imsize ** 2), 1)
         self.h_ = nn.Conv2d(in_dim, in_dim, 1)
 
-        self.gamma = nn.Parameter(torch.zeros(self.b_size, 1, 1, 1))
+        self.gamma = nn.Parameter(torch.zeros(1))
 
     def forward(self, x, pixel_wise=True):
         if pixel_wise:
