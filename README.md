@@ -13,6 +13,7 @@ The pixel-wise self-attention, that is, each pixel takes different attention mas
 
 ## Current update status
 * [ ] Supervised setting
+* [ ] Tensorboard loggings
 * [ ] Better attention visualization
 * [ ] Generated image results (under training, aiming for epoch 100)
 * [x] Attention visualization (LSUN Church-outdoor)
