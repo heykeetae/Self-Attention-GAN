@@ -7,38 +7,37 @@ import numpy as np
 
 class Self_Attn(nn.Module):
     """ Self attention Layer"""
-   def __init__(self,in_dim,activation):
-      
-      super(Self_Attn,self).__init__()
-      self.chanel_in = in_dim
-      self.activation = activation
-      #self.d_model = d_model
-      self.query_conv = nn.Conv2d(in_channels = in_dim , out_channels = in_dim//8 , kernel_size= 1)
-      self.key_conv = nn.Conv2d(in_channels = in_dim , out_channels = in_dim//8 , kernel_size= 1)
-      self.value_conv = nn.Conv2d(in_channels = in_dim , out_channels = in_dim , kernel_size= 1)
-      self.gamma = nn.Parameter(torch.zeros(1))
+    def __init__(self,in_dim,activation):
+        super(Self_Attn,self).__init__()
+        self.chanel_in = in_dim
+        self.activation = activation
+        
+        self.query_conv = nn.Conv2d(in_channels = in_dim , out_channels = in_dim//8 , kernel_size= 1)
+        self.key_conv = nn.Conv2d(in_channels = in_dim , out_channels = in_dim//8 , kernel_size= 1)
+        self.value_conv = nn.Conv2d(in_channels = in_dim , out_channels = in_dim , kernel_size= 1)
+        self.gamma = nn.Parameter(torch.zeros(1))
 
-      self.softmax  = nn.Softmax(dim=-1) #
-   def forward(self,x):
-    """
-        inputs :
-            x : input feature maps( B X C X W X H)
-        returns :
-            out : self attention value + input feature 
-            attention: B X N X N (N is Width*Height)
-    """
-      m_batchsize,C,width ,height = x.size()
-      proj_query  = self.query_conv(x).view(m_batchsize,-1,width*height).permute(0,2,1) # B X CX(N)
-      proj_key =  self.key_conv(x).view(m_batchsize,-1,width*height) # B X C x (*W*H)
-      energy =  torch.bmm(proj_query,proj_key) # transpose check
-      attention = self.softmax(energy) # BX (N) X (N) 
-      proj_value = self.value_conv(x).view(m_batchsize,-1,width*height) # B X C X N
-      
-      out = torch.bmm(proj_value,attention.permute(0,1,2) )  
-      
-      out = out.view(m_batchsize,C,width,height)
-      out = self.gamma*out + x
-      return out,attention
+        self.softmax  = nn.Softmax(dim=-1) #
+    def forward(self,x):
+        """
+            inputs :
+                x : input feature maps( B X C X W X H)
+            returns :
+                out : self attention value + input feature 
+                attention: B X N X N (N is Width*Height)
+        """
+        m_batchsize,C,width ,height = x.size()
+        proj_query  = self.query_conv(x).view(m_batchsize,-1,width*height).permute(0,2,1) # B X CX(N)
+        proj_key =  self.key_conv(x).view(m_batchsize,-1,width*height) # B X C x (*W*H)
+        energy =  torch.bmm(proj_query,proj_key) # transpose check
+        attention = self.softmax(energy) # BX (N) X (N) 
+        proj_value = self.value_conv(x).view(m_batchsize,-1,width*height) # B X C X N
+
+        out = torch.bmm(proj_value,attention.permute(0,1,2) )
+        out = out.view(m_batchsize,C,width,height)
+        
+        out = self.gamma*out + x
+        return out,attention
 
 class Generator(nn.Module):
     """Generator."""
@@ -86,8 +85,8 @@ class Generator(nn.Module):
         last.append(nn.Tanh())
         self.last = nn.Sequential(*last)
 
-        self.attn1 = Self_Attn( int(self.imsize/4), 'relu')
-        self.attn2 = Self_Attn( int(self.imsize/2),  'relu')
+        self.attn1 = Self_Attn( 128, 'relu')
+        self.attn2 = Self_Attn( 64,  'relu')
 
     def forward(self, z):
         z = z.view(z.size(0), z.size(1), 1, 1)
@@ -139,8 +138,8 @@ class Discriminator(nn.Module):
         last.append(nn.Conv2d(curr_dim, 1, 4))
         self.last = nn.Sequential(*last)
 
-        self.attn1 = Self_Attn(int(self.imsize/8), 'relu')
-        self.attn2 = Self_Attn(int(self.imsize/16), 'relu')
+        self.attn1 = Self_Attn(256, 'relu')
+        self.attn2 = Self_Attn(512, 'relu')
 
     def forward(self, x):
         out = self.l1(x)
