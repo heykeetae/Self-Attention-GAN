@@ -13,7 +13,7 @@ The pixel-wise self-attention, that is, each pixel takes a different attention m
 ## Current update status
 * [ ] Supervised setting
 * [ ] Tensorboard loggings
-* [x] [20180608] updated the self-attention module. Thanks to my colleague Cheonbok! see 'sagan_models.py' for the update. Should be efficient and memory saving.
+* [x] [20180608] updated the self-attention module. Thanks to my colleague [Cheonbok](https://github.com/cheonbok94)! see 'sagan_models.py' for the update. Should be efficient and memory saving.
 * [x] Attention visualization (LSUN Church-outdoor)
 * [x] Unsupervised setting (use no label yet) 
 * [x] Applied: [Spectral Normalization](https://arxiv.org/abs/1802.05957), code from [here](https://github.com/christiancosgrove/pytorch-spectral-normalization-gan)
