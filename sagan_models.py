@@ -5,49 +5,40 @@ from torch.autograd import Variable
 from spectral import SpectralNorm
 import numpy as np
 
-
 class Self_Attn(nn.Module):
-    '''
-    input: batch_size x feature_depth x feature_size x feature_size
-    attn_score: batch_size x feature_size x feature_size
-    output: batch_size x feature_depth x feature_size x feature_size
-    '''
+    """ Self attention Layer"""
+   def __init__(self,in_dim,activation):
+      
+      super(Self_Attn,self).__init__()
+      self.chanel_in = in_dim
+      self.activation = activation
+      #self.d_model = d_model
+      self.query_conv = nn.Conv2d(in_channels = in_dim , out_channels = in_dim//8 , kernel_size= 1)
+      self.key_conv = nn.Conv2d(in_channels = in_dim , out_channels = in_dim//8 , kernel_size= 1)
+      self.value_conv = nn.Conv2d(in_channels = in_dim , out_channels = in_dim , kernel_size= 1)
+      self.gamma = nn.Parameter(torch.zeros(1))
 
-    def __init__(self, b_size, imsize, in_dim, activation):
-        super(Self_Attn, self).__init__()
-        self.b_size = b_size
-        self.imsize = imsize
-        self.in_dim = in_dim
-        self.f_ = nn.Conv2d(in_dim, int(in_dim / 8)*(imsize ** 2), 1)
-        self.g_ = nn.Conv2d(in_dim, int(in_dim / 8)*(imsize ** 2), 1)
-        self.h_ = nn.Conv2d(in_dim, in_dim, 1)
-
-        self.gamma = nn.Parameter(torch.zeros(1))
-
-    def forward(self, x, pixel_wise=True):
-        if pixel_wise:
-            b_size = x.size(0)
-            f_size = x.size(-1)
-
-            f_x = self.f_(x)  # batch x in_dim/8*f*f x f_size x f_size
-            g_x = self.g_(x)  # batch x in_dim/8*f*f x f_size x f_size
-            h_x = self.h_(x).unsqueeze(2).repeat(1, 1, f_size ** 2, 1, 1).contiguous()\
-                                                                .view(b_size, -1,f_size ** 2,f_size ** 2)  # batch x in_dim x f*f x f_size x f_size
-
-            f_ready = f_x.contiguous().view(b_size, -1, f_size ** 2, f_size, f_size).permute(0, 1, 2, 4,
-                                                                                             3)  # batch x in_dim*f*f x f_size2 x f_size1
-            g_ready = g_x.contiguous().view(b_size, -1, f_size ** 2, f_size,
-                                            f_size)  # batch x in_dim*f*f x f_size1 x f_size2
-
-            attn_dist = torch.mul(f_ready, g_ready).sum(dim=1).contiguous().view(-1, f_size ** 2)  # batch*f*f x f_size1*f_size2
-            attn_soft = F.softmax(attn_dist, dim=1).contiguous().view(b_size, f_size ** 2, f_size ** 2)  # batch x f*f x f*f
-            attn_score = attn_soft.unsqueeze(1)  # batch x 1 x f*f x f*f
-
-            self_attn_map = torch.mul(h_x, attn_score).sum(dim=3).contiguous().view(b_size, -1, f_size, f_size)  # batch x in_dim x f*f
-
-            self_attn_map = self.gamma * self_attn_map + x
-
-        return self_attn_map, attn_score
+      self.softmax  = nn.Softmax(dim=-1) #
+   def forward(self,x):
+    """
+        inputs :
+            x : input feature maps( B X C X W X H)
+        returns :
+            out : self attention value + input feature 
+            attention: B X N X N (N is Width*Height)
+    """
+      m_batchsize,C,width ,height = x.size()
+      proj_query  = self.query_conv(x).view(m_batchsize,-1,width*height).permute(0,2,1) # B X CX(N)
+      proj_key =  self.key_conv(x).view(m_batchsize,-1,width*height) # B X C x (*W*H)
+      energy =  torch.bmm(proj_query,proj_key) # transpose check
+      attention = self.softmax(energy) # BX (N) X (N) 
+      proj_value = self.value_conv(x).view(m_batchsize,-1,width*height) # B X C X N
+      
+      out = torch.bmm(proj_value,attention.permute(0,1,2) )  
+      
+      out = out.view(m_batchsize,C,width,height)
+      out = self.gamma*out + x
+      return out,attention
 
 class Generator(nn.Module):
     """Generator."""
@@ -95,8 +86,8 @@ class Generator(nn.Module):
         last.append(nn.Tanh())
         self.last = nn.Sequential(*last)
 
-        self.attn1 = Self_Attn(batch_size, int(self.imsize/4), 128, 'relu')
-        self.attn2 = Self_Attn(batch_size, int(self.imsize/2), 64, 'relu')
+        self.attn1 = Self_Attn( int(self.imsize/4), 'relu')
+        self.attn2 = Self_Attn( int(self.imsize/2),  'relu')
 
     def forward(self, z):
         z = z.view(z.size(0), z.size(1), 1, 1)
@@ -148,8 +139,8 @@ class Discriminator(nn.Module):
         last.append(nn.Conv2d(curr_dim, 1, 4))
         self.last = nn.Sequential(*last)
 
-        self.attn1 = Self_Attn(batch_size, int(self.imsize/8), 256, 'relu')
-        self.attn2 = Self_Attn(batch_size, int(self.imsize/16), 512, 'relu')
+        self.attn1 = Self_Attn(int(self.imsize/8), 'relu')
+        self.attn2 = Self_Attn(int(self.imsize/16), 'relu')
 
     def forward(self, x):
         out = self.l1(x)
