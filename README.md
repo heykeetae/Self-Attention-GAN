@@ -6,14 +6,12 @@ This repository provides a PyTorch implementation of [SAGAN](https://arxiv.org/a
 
 Self-attentions are applied to later two layers of both discriminator and generator.
 
-The pixel-wise self-attention, that is, each pixel takes a different attention mask, costs tunes of GPU resource. Batch size of around 8 is available for a single Titan X gpu. You may reduce the number of self-attention modules for less memory consumption.
-
 <p align="center"><img width="100%" src="image/main_model.PNG" /></p>
 
 ## Current update status
 * [ ] Supervised setting
 * [ ] Tensorboard loggings
-* [x] **[20180608] updated the self-attention module. Thanks to my colleague [Cheonbok Park](https://github.com/cheonbok94)! see 'sagan_models.py' for the update. Should be efficient and memory saving.**
+* [x] **[20180608] updated the self-attention module. Thanks to my colleague [Cheonbok Park](https://github.com/cheonbok94)! see 'sagan_models.py' for the update. Should be efficient, and run on large sized images**
 * [x] Attention visualization (LSUN Church-outdoor)
 * [x] Unsupervised setting (use no label yet) 
 * [x] Applied: [Spectral Normalization](https://arxiv.org/abs/1802.05957), code from [here](https://github.com/christiancosgrove/pytorch-spectral-normalization-gan)
