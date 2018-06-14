@@ -33,7 +33,7 @@ class Self_Attn(nn.Module):
         attention = self.softmax(energy) # BX (N) X (N) 
         proj_value = self.value_conv(x).view(m_batchsize,-1,width*height) # B X C X N
 
-        out = torch.bmm(proj_value,attention.permute(0,1,2) )
+        out = torch.bmm(proj_value,attention.permute(0,2,1) )
         out = out.view(m_batchsize,C,width,height)
         
         out = self.gamma*out + x
